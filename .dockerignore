@@ -1,0 +1,13 @@
+.venv/
+venv/
+__pycache__/
+*.pyc
+.git/
+.idea/
+.pytest_cache/
+.coverage
+htmlcov/
+playwright-report/
+test-results/
+*.zip
+ticketfast.db
