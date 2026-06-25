@@ -1,0 +1,35 @@
+<component name="InspectionProjectProfileManager">
+  <profile version="1.0">
+    <option name="myName" value="Project Default" />
+    <inspection_tool class="Eslint" enabled="true" level="WARNING" enabled_by_default="true" />
+    <inspection_tool class="PyPackageRequirementsInspection" enabled="true" level="WARNING" enabled_by_default="true">
+      <option name="ignoredPackages">
+        <list>
+          <option value="behave" />
+          <option value="cffi" />
+          <option value="charset-normalizer" />
+          <option value="colorama" />
+          <option value="coverage" />
+          <option value="cryptography" />
+          <option value="cucumber-expressions" />
+          <option value="cucumber-tag-expressions" />
+          <option value="iniconfig" />
+          <option value="packaging" />
+          <option value="parse" />
+          <option value="parse_type" />
+          <option value="pdfminer.six" />
+          <option value="pdfplumber" />
+          <option value="pillow" />
+          <option value="pluggy" />
+          <option value="pycparser" />
+          <option value="Pygments" />
+          <option value="pypdfium2" />
+          <option value="pytest" />
+          <option value="six" />
+          <option value="psycopg2-binary" />
+          <option value="pytest-django" />
+        </list>
+      </option>
+    </inspection_tool>
+  </profile>
+</component>
