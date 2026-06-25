@@ -9,3 +9,6 @@ htmlcov/
 playwright-report/
 test-results/
 *.zip
+
+.idea/
+ticketfast.db
