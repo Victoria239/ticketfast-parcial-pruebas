@@ -1,20 +1,31 @@
 # TicketFast - Parcial Pruebas de Software
 
-Proyecto desarrollado para el examen parcial de Pruebas de Integracion, Sistema y E2E.
+Proyecto desarrollado para el examen parcial de **Pruebas de Integración, Sistema y E2E** del curso de Pruebas de Software.  
+El sistema simula una plataforma llamada **TicketFast**, encargada de gestionar reservas de boletos para eventos masivos.
 
-## Contexto
+## Descripción del proyecto
 
-TicketFast es una plataforma de reserva de boletos para eventos masivos. El sistema permite crear reservas por evento y calcular el total recaudado segun la zona y la cantidad de asientos reservados.
+TicketFast permite registrar reservas de asientos para eventos y calcular el total recaudado según la zona seleccionada y la cantidad de asientos reservados.
 
-## Reglas de negocio
+Las zonas disponibles son:
 
-- Zona VIP: 150000 COP por asiento.
-- Zona General: 50000 COP por asiento.
-- No se permiten zonas diferentes a VIP o General.
-- La cantidad de asientos debe ser minimo 1.
-- El total recaudado se calcula sumando cantidad por precio de zona para todas las reservas activas del evento.
+- **VIP:** 150.000 COP por asiento.
+- **General:** 50.000 COP por asiento.
 
-## Tecnologias
+Además, el sistema valida que solo se puedan registrar reservas con zonas válidas y con una cantidad mínima de un asiento.
+
+## Qué se realizó
+
+En este proyecto se implementó una API con **FastAPI**, persistencia con **SQLAlchemy** y una base de datos real en **PostgreSQL** usando Docker.
+
+También se desarrollaron las pruebas solicitadas en el parcial:
+
+- Prueba de integración de API.
+- Prueba de sistema usando peticiones HTTP reales.
+- Prueba E2E de frontend con Playwright.
+- Infraestructura de pruebas con `docker-compose.test.yml`.
+
+## Tecnologías utilizadas
 
 - Python
 - FastAPI
@@ -27,59 +38,67 @@ TicketFast es una plataforma de reserva de boletos para eventos masivos. El sist
 
 ## Estructura del proyecto
 
-src/database/
-- models.py: modelo ReservaDB.
-- config.py: configuracion de conexion a base de datos.
-- repositorio.py: operaciones de persistencia y calculo financiero.
+```txt
+ticketfast-parcial-pruebas/
+│
+├── src/
+│   ├── database/
+│   │   ├── config.py
+│   │   ├── models.py
+│   │   └── repositorio.py
+│   │
+│   └── reservas/
+│       └── api.py
+│
+├── tests/
+│   ├── integration/
+│   │   └── test_api_integracion.py
+│   │
+│   ├── system/
+│   │   └── test_sistema_e2e.py
+│   │
+│   └── e2e/
+│       └── test_frontend_e2e.py
+│
+├── frontend_mock/
+│   └── app.py
+│
+├── docs/
+│   ├── CHECKLIST_CUMPLIMIENTO.md
+│   └── COMANDOS_EJECUCION.md
+│
+├── docker-compose.test.yml
+├── Dockerfile
+├── requirements.txt
+└── pytest.ini
 
-src/reservas/
-- api.py: endpoints de reservas y resumen financiero.
+Ejecución del proyecto
+1. Crear y activar entorno virtual
+python -m venv .venv
 
-tests/integration/
-- test_api_integracion.py: prueba de integracion con API y consulta directa a base de datos.
+En Windows:
 
-tests/system/
-- test_sistema_e2e.py: prueba de sistema usando HTTP real con httpx.
-
-tests/e2e/
-- test_frontend_e2e.py: prueba E2E de frontend con Playwright.
-
-docs/
-- CHECKLIST_CUMPLIMIENTO.md: verificacion de requisitos del parcial.
-- COMANDOS_EJECUCION.md: comandos para ejecutar el proyecto y las pruebas.
-
-## Infraestructura de pruebas
-
-El archivo docker-compose.test.yml define:
-
-- db-test con postgres:16-alpine.
-- tmpfs en /var/lib/postgresql/data para datos temporales.
-- api-test exponiendo el puerto 8001.
-- dependencia de api-test hacia db-test con healthcheck.
-
-## Ejecucion rapida
-
-Instalar dependencias:
-
+.\.venv\Scripts\activate
+2. Instalar dependencias
 pip install -r requirements.txt
-
-Levantar contenedores:
-
+3. Instalar navegador de Playwright
+python -m playwright install chromium
+4. Levantar la infraestructura de pruebas
 docker compose -f docker-compose.test.yml up --build -d
+5. Verificar contenedores
+docker compose -f docker-compose.test.yml ps
 
-Ejecutar prueba de integracion:
+Se espera que los servicios db-test y api-test estén activos.
 
-pytest tests/integration/test_api_integracion.py -q
+6. Levantar el frontend mock
 
-Ejecutar prueba de sistema:
+En otra terminal, ejecutar:
 
-pytest tests/system/test_sistema_e2e.py -q
+uvicorn frontend_mock.app:app --host 127.0.0.1 --port 4200
 
-Ejecutar prueba E2E:
+Este frontend permite validar la prueba E2E en la ruta:
 
-pytest tests/e2e/test_frontend_e2e.py -q
+http://localhost:4200/reservas
+7. Ejecutar todas las pruebas
+pytest tests/integration tests/system tests/e2e -q
 
-## Nota sobre prueba E2E
-
-El enunciado asume que el frontend esta corriendo en http://localhost:4200.  
-Si no esta disponible, la prueba E2E queda como skipped para evitar fallos por una dependencia externa no levantada.
